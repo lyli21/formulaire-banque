@@ -1,0 +1,15 @@
+body {
+    background-image: url(../Ressource/fond.png);
+}
+
+form{
+    background-color: rgba(128, 128, 128, 0.904);
+    color: green;
+    margin: 10%;
+    padding: 2%;
+    width: 100%;
+}
+
+.messageErreur {
+    color: rgb(169, 3, 3);
+}
