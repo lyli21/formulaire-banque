@@ -2,14 +2,47 @@ body {
     background-image: url(../Ressource/fond.png);
 }
 
-form{
+h1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: rgb(6, 87, 6);
+    ;
+    font-family: fantasy, monospace;
     background-color: rgba(128, 128, 128, 0.904);
-    color: green;
     margin: 10%;
     padding: 2%;
-    width: 100%;
+    height: 10%;
+    width: 75%;
+}
+
+form {
+    background-color: rgba(128, 128, 128, 0.904);
+    color: rgb(6, 43, 6);
+    font-family: 'Times New Roman', Times, serif;
+    font-size: larger;
+    margin: 10%;
+    margin-top: 3% !important;
+    padding: 5%;
+    width: 75%;
 }
 
 .messageErreur {
     color: rgb(169, 3, 3);
+}
+
+
+.color {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    margin: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    background-color: rgb(9, 92, 9);
+    color: white;
 }

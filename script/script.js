@@ -27,12 +27,32 @@ document.addEventListener('DOMContentLoaded', function () {
         this.value = this.value.charAt(0).toUpperCase() + this.value.slice(1).toLowerCase();
     });
 
-    // séparateurs
-    dateNaissance.addEventListener('input', function () {
-        this.value = this.value.replace(/[.\- ]/g, '/');
+    // Format de date avec slashs automatiques
+    dateNaissance.addEventListener('input', function (e) {
+        let value = e.target.value.replace(/\D/g, ''); // Garde uniquement les chiffres
+        if (value.length >= 2) {
+            value = value.substring(0, 2) + '/' + value.substring(2);
+        }
+        if (value.length >= 5) {
+            value = value.substring(0, 5) + '/' + value.substring(5);
+        }
+        this.value = value.substring(0, 10);
     });
 
-    // Validation des champs
+    // Validation au blur pour chaque champ
+    function validateField(element, validationFn, errorMessage) {
+        element.addEventListener('blur', function() {
+            if (!this.value) {
+                erreurs[element.id].textContent = 'Ce champ est requis';
+            } else if (!validationFn(this.value)) {
+                erreurs[element.id].textContent = errorMessage;
+            } else {
+                erreurs[element.id].textContent = '';
+            }
+        });
+    }
+
+    // Fonctions de validation
     function validerNomPrenom(valeur) {
         const regex = /^[a-zà-ÿ]{3,}$/i;
         return regex.test(valeur.trim());
@@ -53,39 +73,43 @@ document.addEventListener('DOMContentLoaded', function () {
         return regex.test(valeur.trim());
     }
 
+    // Ajout des validations au blur
+    validateField(nom, validerNomPrenom, 'Nom invalide (min. 3 caractères alphabétiques).');
+    validateField(prenom, validerNomPrenom, 'Prénom invalide (min. 3 caractères alphabétiques).');
+    validateField(dateNaissance, validerDateNaissance, 'Date invalide (format JJ/MM/AAAA).');
+    validateField(email, validerEmail, 'Email invalide.');
+    validateField(codeConfidentiel, validerCodeConfidentiel, 'Code invalide (format : FR + 5 chiffres + 3 lettres/caractères spéciaux + x).');
+
     // Gestion du formulaire à la soumission
     form.addEventListener('submit', function (event) {
         event.preventDefault();
+        form.submit();
         let valide = true;
 
         // Réinitialiser les messages d'erreur
         Object.values(erreurs).forEach(erreur => erreur.textContent = '');
 
-        // Validation Nom
+        // Vérification de tous les champs
         if (!validerNomPrenom(nom.value)) {
             erreurs.nom.textContent = 'Nom invalide (min. 3 caractères alphabétiques).';
             valide = false;
         }
 
-        // Validation Prénom
         if (!validerNomPrenom(prenom.value)) {
             erreurs.prenom.textContent = 'Prénom invalide (min. 3 caractères alphabétiques).';
             valide = false;
         }
 
-        // Validation Date de Naissance
         if (!validerDateNaissance(dateNaissance.value)) {
             erreurs.dateNaissance.textContent = 'Date invalide (format JJ/MM/AAAA).';
             valide = false;
         }
 
-        // Validation Email
         if (!validerEmail(email.value)) {
             erreurs.email.textContent = 'Email invalide.';
             valide = false;
         }
 
-        // Validation Code Confidentiel
         if (!validerCodeConfidentiel(codeConfidentiel.value)) {
             erreurs.codeConfidentiel.textContent = 'Code invalide (format : FR + 5 chiffres + 3 lettres/caractères spéciaux + x).';
             valide = false;
